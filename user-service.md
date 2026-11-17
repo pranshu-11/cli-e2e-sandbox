@@ -42,3 +42,7 @@ verification round-trip before they take effect.
 Passwords are hashed with bcrypt and never logged. Session tokens are JWTs
 signed with the service key; the `exp` claim is enforced on every request and
 tokens are rejected once the account is deactivated.
+
+### deleteUser(userId)
+
+Soft-deletes by setting `isActive: false`.
