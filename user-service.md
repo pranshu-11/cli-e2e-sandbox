@@ -28,6 +28,14 @@ callers can render a tombstone instead of a 404.
 Applies a partial update to the mutable profile fields. Email changes require a
 verification round-trip before they take effect.
 
+### `deleteUser(userId)`
+
+Soft-deletes the account by setting its `isActive` flag to `false`. The row and
+its history are retained, so `getUser` keeps returning the profile with
+`isActive: false`. Sessions for the account are invalidated on the next request,
+and the operation is idempotent: deleting an already inactive user succeeds
+without further changes.
+
 ## Configuration
 
 | Setting | Default | Description |
@@ -36,6 +44,9 @@ verification round-trip before they take effect.
 | `DATABASE_URL` | — | Postgres connection string. |
 | `SESSION_TTL` | `3600` | Session token lifetime in seconds. |
 | `BCRYPT_ROUNDS` | `12` | Cost factor used when hashing passwords. |
+| `REDIS_URL` | — | Redis connection string used for the response cache. |
+| `CACHE_TTL` | `900` | Cache entry lifetime in seconds (15 minutes). |
+| `RATE_LIMIT` | `100` | Maximum requests per minute, per account and source address. |
 
 ## Security
 
